@@ -1,0 +1,174 @@
+{% extends 'links.html' %}
+{% load static %}
+{% block body %}
+<script>
+  function toggleAvailability(houseId) {
+    // Send AJAX request to toggle availability
+    fetch(`/toggle-availability/${houseId}/`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          // Toggle button text and color
+          const button = document.getElementById(`availability-btn-${houseId}`);
+          button.textContent = data.available ? "Make Unavailable" : "Make Available";
+          button.classList.toggle("btn-success");
+          button.classList.toggle("btn-danger");
+        } else {
+          console.error(data.error);
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
+</script>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 bg-dark text-light p-4 rounded" style="margin-top: 3em; height: 950px;">
+      <!-- Profile Info -->
+      <div class="profile-info text-center mb-4" style="margin-top: 3em;">
+        <div class="profile-picture mb-3">
+          {% if user.is_authenticated %}
+          {% if user.profile_picture %}
+          <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="img-fluid rounded-circle"
+            style="width: 250px; height: 250px;">
+          {% else %}
+          <img src="{% static 'images/user.png' %}" alt="Default Profile Picture" class="img-fluid rounded-circle"
+            style="width: 150px; height: 150px;">
+          {% endif %}
+          {% else %}
+          <img src="{% static 'images/user.png' %}" alt="Default Profile Picture" class="img-fluid rounded-circle"
+            style="width: 150px; height: 150px;">
+          {% endif %}
+        </div>
+        <div class="profile-details">
+          <h4 class="mb-2">{{ user.name }}</h4>
+          <p class="mb-0">Ewaka Rental User</p>
+        </div>
+      </div>
+
+      <!-- Navigation Menu -->
+      <div class="profile-menu mb-4">
+        <div class="btn-group-vertical"style="width: 100%;">
+          <a href="#" class="btn btn-info mb-2" >
+            <i class="fas fa-home mr-2"></i> Overview
+          </a>
+          <a href="#" class="btn btn-danger mb-2">
+            <i class="fas fa-tasks mr-2"></i> Tasks
+          </a>
+          <a href="/contact/" class="btn btn-success">
+            <i class="fas fa-flag mr-2"></i> Help
+          </a>
+        </div>
+      </div><br>
+
+      <!-- Profile Stats -->
+      <div class="profile-stats mb-4" style="text-align: center;">
+        <div class="stat">
+          <div class="value h2">{{ houseno }}</div>
+          <div class="label">Houses Posted</div>
+        </div>
+        <div class="stat">
+          <div class="value h2">{{ reportno }}</div>
+          <div class="label">Messages Reported</div>
+        </div>
+      </div><br>
+
+      <!-- Contact Info -->
+      <div class="contact-info" style="text-align: center;">
+        <p class="mb-2"><strong>Email:</strong> {{ user.email }}</p>
+        <p class="mb-2"><strong>Phone Number:</strong> {{ user.number }}</p>
+        <p class="mb-0"><strong>Location:</strong> {{ user.location }}, {{ user.city }}</p>
+      </div>
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="col-md-9" style="margin-top: 5em;">
+      <div class="container">
+        <!-- Advertise Button -->
+        <div class="advertise-btn">
+          <a href="/posth/">
+            <button type="button" class="btn btn-success btn-block">
+              Advertise Your Property
+            </button><br>
+          </a>
+        </div>
+
+        <!-- Promotion Section -->
+        <div class="promotion-section text-center">
+          <h3>Reach thousands of potential renters and boost visibility with premium advertising options</h3><br>
+        </div>
+
+        <!-- Messages -->
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissible" role="alert">
+          <strong>{{ message }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <!-- Financial Management -->
+        <div class="financial-management">
+          <h4>Tenant and Financial Management</h4>
+          <p>
+            This section allows you to manage tenants, including contact information, lease agreements, and maintenance
+            requests. It also enables you to track income and expenses related to the properties, record rent payments,
+            manage maintenance costs, and generate financial reports.
+          </p>
+          <div class="btn-group">
+            <a href="/register-tenant/" class="btn btn-secondary">Register Tenant</a>
+            <a href="/register-income/" class="btn btn-success">Register Income</a>
+            <a href="/register-expense/" class="btn btn-danger">Register Expense</a>
+            <a href="/financial-management/" class="btn btn-info">Generate Financial Reports</a>
+          </div>
+        </div>
+
+        <!-- House Listings -->
+        {% if house_with_images %}
+        <h5 class="my-4 text-center">Houses - Posted for You</h5>
+        <div class="row">
+          {% for house, images in house_with_images %}
+          <div class="col-md-4">
+            <div class="card mb-4">
+              {% if images %}
+              <img class="card-img-top" src="{{ images.0.img.url }}" alt="House Image" />
+              {% else %}
+              <img class="card-img-top" src="{% static 'placeholder.jpg' %}" alt="Placeholder Image" />
+              {% endif %}
+              <div class="card-body">
+                <p class="card-text">House ID: {{ house.house_id }}</p>
+                <p class="card-text">Rental Cost: {{ house.cost }}</p>
+                <p class="card-text">Location: {{ house.location }}</p>
+                <div class="btn-group">
+                  <form action="/descr/" style="margin-bottom: 5px">
+                    <button name="id" value="{{ house.house_id }}" class="btn btn-sm btn-outline-secondary">
+                      Quick view
+                    </button>
+                  </form>
+                  <form action="/deleteh/">
+                    <button name="id" value="{{ house.house_id }}" type="submit"
+                      class="btn btn-sm btn-outline-secondary">
+                      Delete
+                    </button>
+                  </form>
+                  <form>
+                    <button id="availability-btn-{{ house.house_id }}"
+                      class="btn btn-sm {% if house.available %}btn-success{% else %}btn-danger{% endif %}"
+                      onclick="toggleAvailability('{{ house.house_id }}')">
+                      {% if house.available %}Make Unavailable{% else %}Make Available{% endif %}
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

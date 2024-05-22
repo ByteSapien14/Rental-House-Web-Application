@@ -1,0 +1,189 @@
+{% extends 'links.html' %} {%load static%} {%block button%}
+<a
+  class="btn btn-outline-success navbar-login-btn-sm"
+  href="/login/"
+  style="color: white"
+  ><strong>Login</strong></a
+>
+{%endblock%} {%block style%}
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-image: url('{% static "images/house.webp" %}');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    background-attachment: fixed;
+  }
+
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    /* Adjust width as needed */
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 2px solid #665555;
+    border-radius: 4px;
+    background-color: rgb(245, 242, 239);
+  }
+
+  .form-container {
+    width: 100%;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px;
+  }
+
+  button[type="submit"] {
+    background-color: #4caf50;
+  }
+</style>
+{%endblock%} {%block body%}
+
+<div
+  class="w3-container"
+  style="margin-top: 4em; margin-left: 5%; margin-right: 5%"
+>
+  <h2 style="color: rgb(16, 37, 131); text-align: center">
+    Register Here As Landlord
+  </h2>
+  <div class="alert alert-info" role="alert">
+    {% if form.errors %}
+    <div class="alert alert-danger">
+      <strong>Error:</strong> Please correct the following errors:
+      <ul>
+        {% for field, errors in form.errors.items %} {% for error in errors %}
+        <li>{{ field|title }}: {{ error }}</li>
+        {% endfor %} {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+  <form
+    class="register-form"
+    id="registerForm"
+    action="/register/"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    <div class="form-container">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          placeholder="Enter Name"
+          name="name"
+          id="name"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          placeholder="user@gmail.com"
+          name="email"
+          id="email"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input
+          type="text"
+          placeholder="Muyenga"
+          name="location"
+          id="location"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="city">City</label>
+        <input
+          type="text"
+          placeholder="Kampala"
+          name="city"
+          id="city"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="country">Country</label>
+        <input
+          type="text"
+          placeholder="Uganda"
+          name="state"
+          id="state"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input
+          type="tel"
+          placeholder="Enter Telephone Number"
+          name="number"
+          id="phone"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="pass">Password</label>
+        <input
+          type="password"
+          placeholder="Enter Password"
+          name="password1"
+          id="pass"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="cpass">Confirm Password</label>
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          name="password2"
+          id="cpass"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="profile_picture">Profile Picture</label>
+        <input
+          type="file"
+          name="profile_picture"
+          id="profile_picture"
+          accept="image/*"
+          required
+        />
+      </div>
+      <button type="submit">Sign up</button>
+    </div>
+  </form>
+</div>
+{%endblock%}

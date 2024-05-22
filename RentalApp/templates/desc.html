@@ -1,0 +1,80 @@
+{% extends 'links.html' %}
+{% load static %}
+{% block style %}
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-image: url('{% static "images/house.webp" %}');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 0.1;
+  }
+</style>
+{% endblock %}
+{% block body %}
+<div class="w3-container" style="padding-top:6em;">
+  <div class="card mb-3"
+    style="border: 1px solid #ddd; box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); max-width: 1000px; margin: 0 auto; height: 1050px;">
+    <div class="image-container">
+      {% if images.count == 1 %}
+      <img src="{{ images.first.img.url }}" class="card-img-top img-fluid" alt="Property Image"
+        style="width: 100%; height: 500px;"> {% else %}
+      <div class="thumbnails">
+        {% for image in images %}
+        <div class="card" style="width: 32%; display: inline-block; margin: 5px;"> <a href="{{ image.img.url }}"
+            class="lightbox-image" alt="Property Image {{ forloop.counter }}">
+            <img src="{{ image.img.url }}" class="card-img-top img-fluid max-width: 100%;"
+              alt="Property Image {{ forloop.counter }}">
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    <div class="card-body">
+      <h3 class="card-title w3-text-teal">Shs {{val.cost}}</h3>
+      <p class="card-text w3-text-grey">{{val.desc}}</p>
+      <p><i class="fas fa-map-marker-alt"></i><a
+          href="https://www.google.com/maps/place/{{val.location}}">{{val.location}}</a> {{val.city}}, {{val.state}}</p>
+      <a href="/contact/" class="btn btn-primary w3-round-large">Schedule A Tour</a>
+      <hr>
+      <h3><b>House Details</b></h3>
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <th>Bedrooms:</th>
+            <td>{{val.bedroom}}</td>
+            <th scope="row">Kitchen:</th>
+            <td>{{val.kitchen}}</td>
+            <th scope="row">Date posted:</th>
+            <td><b>{{val.date}}</b></td>
+          </tr>
+        </tbody>
+      </table>
+      <hr>
+      <h3><b>Posted by</b></h3>
+      <p>{{user.name}}</p>
+      <p><i class="fas fa-map-marker-alt"></i> {{user.location}}, {{val.city}}, {{val.state}}</p>
+      <p>Contact no. {{user.number}}</p>
+      <p style="float: right;"><a href="/contact/">Report this ad</a></p>
+      {% if is_available %}
+      <button class="btn btn-sm btn-success">Available</button>
+      {% else %}
+      <button class="btn btn-sm btn-danger">Unavailable</button>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

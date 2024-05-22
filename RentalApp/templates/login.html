@@ -1,0 +1,61 @@
+{% extends 'links.html' %} {% load static %} {% block style %}
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-image: url('{% static "images/house.webp" %}');
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+    }
+
+    .w3-container {    
+        border-color: black;
+        background: transparent;
+        margin: 4% auto;
+        max-width: 43em;
+    }
+
+    /* Adjust input field width */
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #534f4f;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+</style>
+{% endblock %} {% block body %}
+
+<h2 style="text-align: center; margin-top: 3em; color: rgb(48, 34, 175)">
+    <b>Log In</b>
+</h2>
+<div class="w3-container" >
+    <form action="/login/" method="post">
+        {% csrf_token %}
+        <div class="container card bg-light mb-3" style="padding: 2em;">
+            {% if messages %} {% for message in messages %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+            {% endfor %} {% endif %}
+
+            <label for="id_email"><b>Email</b></label>
+            {{ form.email }}
+            <label for="id_password"><b>Password</b></label>
+            {{ form.password }}
+            <label>
+                <input type="checkbox" checked="checked" name="remember"> Remember me
+            </label>
+            <button type="submit" class="btn btn-primary btn-block" style="background: #7fb439">
+                Login
+            </button>
+            <br>
+            <div class="container card text-center" style="background: rgb(172, 190, 189)">
+                <span class="psw">Forgot <a href="/contact/">Password?</a></span>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

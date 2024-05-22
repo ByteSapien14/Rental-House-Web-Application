@@ -1,0 +1,123 @@
+{% extends 'links.html' %} 
+{% load static %} 
+{% block style %}
+<style>
+   body {
+        margin: 0;
+        padding: 0;
+        background-image: url('{% static "images/house.webp" %}');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed; 
+        position: relative;
+    } 
+
+  body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 0.1;
+  }
+</style>
+{% endblock %}
+{% block body %}
+<div class="container" style="margin-top: 4em; margin-bottom: 12em; ">
+    <div class="row" style="margin-bottom: 1em;" >
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Income Tracking</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Tenant</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for income in incomes %}
+                            <tr>
+                                <td>{{ income.date }}</td>
+                                <td>{{ income.tenant }}</td>
+                                <td>{{ income.amount }}</td>
+                                <td>{{ income.status }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Expense Tracking</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for expense in expenses %}
+                            <tr>
+                                <td>{{ expense.date }}</td>
+                                <td>{{ expense.description }}</td>
+                                <td>{{ expense.amount }}</td>
+                                <td>{{ expense.status }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Tenants Registered</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Tenant Name</th>
+                                <th>Tenant Contact</th>
+                                <th>Lease Start Date</th>
+                                <th>Lease End Date</th>
+                                <th>Tenant Emergency Contact</th>
+                                <th>Tenant Phone Number</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tenant in tenants %}
+                            <tr>
+                                <td>{{ tenant.name }}</td>
+                                <td>{{ tenant.email }}</td>
+                                <td>{{ tenant.lease_start_date }}</td>
+                                <td>{{ tenant.lease_end_date }}</td>
+                                <td>{{ tenant.emergency_contact_number }}</td>
+                                <td>{{ tenant.phone_number }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}

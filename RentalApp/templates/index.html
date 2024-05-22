@@ -1,0 +1,184 @@
+{% extends 'links.html' %} {% load static %} {% block style %}
+<style>
+    .w3-home-container {
+        margin-top: 1%;
+        margin-bottom: 1%;
+        overflow: hidden;
+    }
+    .jumbotron {
+        position: relative;
+        /* Ensure proper positioning */
+        margin-bottom: 0;
+        background-image: url("{% static 'images/house.webp' %}");
+        background-position: center;
+        background-size: cover;
+        color: white;
+        font-size: 2em;
+        /* Ensure overflow doesn't affect positioning */
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .text-content {
+        position: relative;
+        z-index: 1;
+        /* Ensure text content is above overlay */
+        text-align: center;
+        /* Center text content */
+        padding: 20px;
+        /* Add padding for readability */
+    }
+
+    .card {
+        max-width: 25em;
+        border: 1px solid #ced4da;
+        /* Add border for better separation */
+        border-radius: 8px;
+        /* Add border radius for rounded corners */
+        overflow: hidden;
+        /* Ensure overflow doesn't affect card appearance */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* Add shadow for depth */
+        transition: box-shadow 0.3s ease;
+        /* Add smooth transition for hover effect */
+        text-decoration: none;
+        /* Remove default link underline */
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        /* Increase shadow on hover */
+    }
+
+    .card-img-top {
+        height: 200px;
+        /* Set height for image container */
+        background-size: cover;
+        /* Ensure image covers container */
+        background-position: center;
+        /* Center image within container */
+    }
+
+    .card-body {
+        padding: 15px;
+        /* Add padding for content */
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        /* Adjust font size for title */
+        font-weight: bold;
+        /* Add bold font weight for emphasis */
+        margin-bottom: 0.75rem;
+        /* Add margin below title */
+    }
+
+    .card-text {
+        font-size: 1rem;
+        /* Adjust font size for text */
+        margin-bottom: 0.5rem;
+        /* Add margin below text */
+        text-align: center;
+    }
+
+    .btn {
+        cursor: pointer;
+        /* Add pointer cursor for button */
+    }
+</style>
+{% endblock %} {% block body %}
+<div class="w3-home-container">
+    <div class="jumbotron">
+        <div class="overlay"></div>
+        <!-- Add overlay for background image -->
+        <div class="text-content">
+            <h1>Ewaka Rentals</h1>
+            <p>Find A Place To Stay</p>
+        </div>
+    </div>
+</div>
+<h5 class="my-4" style="text-align: center">Houses - Recommended for You.</h5>
+{% if house_list %} 
+<div class="w3-row-padding">
+    <div class="row"style="margin-left: 2%;">
+        {% for house in house_list %}
+        <div class="col-md-3" >
+            <div class="w3-container w3-margin-bottom">
+                <div class="card" style="background-color: #e9ecef">
+                    <img src="{{ house.img.all.first.img.url }}" class="w3-hover-opacity"
+                        style="height: 250px; width: 100%" alt="..." />
+                    <div class="card-body">
+                        <p class="card-text">{{ house.desc|slice:"0:100" }}...</p>
+                        <p class="card-text">
+                            {{ house.location }}, {{ house.city }}, {{ house.country }} </p>
+                        <div style="text-align: center">
+                            <form action="/descr/" style="margin-bottom: 5px">
+                                <button class="btn btn-secondary" name="id" value="{{ house.house_id }}"
+                                    style="margin: auto">
+                                    Quick view
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div id="load-more-btn-container" class="text-center my-3">
+        <button id="load-more-btn" class="btn btn-primary">Load More</button>
+    </div>
+</div>
+{% endif %}
+
+<script>
+  // JavaScript for loading more items
+var houseList = []; // Assuming the view passes the house list
+var currentIndex = 0; // Start from the beginning
+var loadMoreBtn = document.getElementById("load-more-btn");
+
+if (houseList && houseList.length > 0) {
+  loadMoreBtn.addEventListener("click", function () {
+    var container = document.querySelector(".row");
+    for (var i = currentIndex; i < currentIndex + 6 && i < houseList.length; i++) {
+      var house = houseList[i];
+      var cardHtml = `
+        <div class="col-md-4">
+          <div class="w3-container w3-margin-bottom">
+            <div class="card" style="background-color: #e9ecef;">
+              <img src="${house.img.all.first.img.url}" class="w3-hover-opacity" style="height: 250px; width: 100%" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">${house.title}</h5>
+                <p class="card-text">${house.desc.slice(0, 50)}...</p>
+                <p class="card-text">${house.location}, ${house.city}, ${house.state}</p>
+                <div style="text-align: center;">
+                  <form action="/login/" style="margin-bottom: 5px;">
+                    <button class="btn btn-secondary" name="id" value="${house.house_id}" style="margin: auto;">Quick view</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      container.innerHTML += cardHtml;
+    }
+    currentIndex = i;
+    if (currentIndex >= houseList.length) {
+      loadMoreBtn.style.display = "none";
+    }
+  });
+} else {
+  // Handle the scenario where there are no houses to load
+  console.error("No houses available for loading.");
+}
+
+</script>
+
+{% endblock %}

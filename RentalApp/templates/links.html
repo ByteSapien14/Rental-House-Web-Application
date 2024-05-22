@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Rental</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <link rel="icon" href="{% static 'images/logo.png' %}" type="image/jpg" />
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+  {% block style %}
+
+  <style>
+    @media screen and (max-width: 300px) {
+      span.psw {
+        display: block;
+        float: none;
+      }
+
+      .cancelbtn {
+        width: 100%;
+      }
+    }
+
+    .fakeimg {
+      height: 200px;
+      background: #aaa;
+    }
+
+    @media screen and (max-width: 600px) {
+      .navbar .navbar-collapse {
+        margin-left: unset !important;
+      }
+
+      .navbar .navbar-collapse li {
+        font-size: 1.5em;
+        text-align: center;
+      }
+
+      .navbar-signup-btn-sm {
+        display: flex !important;
+        justify-content: center;
+        margin-left: unset !important;
+        margin-top: 1em;
+      }
+
+      .navbar-login-btn-sm {
+        display: flex !important;
+        justify-content: center;
+      }
+
+      .navbar-logout-btn {
+        display: flex !important;
+        justify-content: center;
+        margin-left: unset !important;
+        margin-top: 1em;
+      }
+
+      .navbar-profile-btn {
+        display: flex !important;
+        justify-content: center;
+      }
+    }
+
+    .w3-panel i {
+      padding: 0.5em;
+      cursor: pointer;
+    }
+  </style>
+
+  {% endblock %}
+</head>
+
+<body>
+  {% include 'nav.html' %} {% block body %} {% endblock %}
+
+  <script>
+    // Get the modal
+    var modal = document.getElementById("id01");
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+
+    nav_items = document.getElementsByClassName("nav-item");
+
+    for (var index = 0; index < nav_items.length; index++) {
+      nav_items[index].classList.remove("active");
+    }
+
+    for (var index = 0; index < nav_items.length; index++) {
+      if (nav_items[index].children[0].pathname == window.location.pathname) {
+        nav_items[index].classList.add("active");
+      }
+    }
+  </script>
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  {% include 'footer.html' %} {% block script %} {% endblock %}
+</body>
+
+</html>
