@@ -21,6 +21,17 @@
     background-color: rgba(0, 0, 0, 0.4);
     z-index: 0.1;
   }
+
+  .custom-button {
+    font-size: 20px;
+    border-radius: 5px;
+    padding: 5px 10px;
+  }
+
+  .btn-success.custom-button {
+    background-color: #28a745;
+    color: #fff;
+  }
 </style>
 {% endblock %}
 {% block body %}
@@ -43,6 +54,11 @@
       </div>
       {% endif %}
     </div>
+    {% if is_available %}
+    <button class="btn btn-sm btn-success custom-button">Available</button>
+    {% else %}
+    <button class="btn btn-sm btn-danger custom-button">Unavailable</button>
+    {% endif %}
     <div class="card-body">
       <h3 class="card-title w3-text-teal">Shs {{val.cost}}</h3>
       <p class="card-text w3-text-grey">{{val.desc}}</p>
@@ -69,11 +85,6 @@
       <p><i class="fas fa-map-marker-alt"></i> {{user.location}}, {{val.city}}, {{val.state}}</p>
       <p>Contact no. {{user.number}}</p>
       <p style="float: right;"><a href="/contact/">Report this ad</a></p>
-      {% if is_available %}
-      <button class="btn btn-sm btn-success">Available</button>
-      {% else %}
-      <button class="btn btn-sm btn-danger">Unavailable</button>
-      {% endif %}
     </div>
   </div>
 </div>
