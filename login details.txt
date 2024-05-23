@@ -1,2 +1,3 @@
+Super User
 email "ewakarentals@gmail.com"
 password "westworld1445"
