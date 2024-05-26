@@ -74,30 +74,22 @@ class User(AbstractBaseUser):
 
     @staticmethod
     def has_perm(perm, obj=None):
-       
         return True
 
     @staticmethod
     def has_module_perms(app_label):
-        
         return True
 
     @property
     def is_staff(self):
-
-
         return self.staff
 
     @property
     def is_admin(self):
-
-
         return self.admin
 
     @property
     def user_active(self):
-
-
         return self.active
 
 

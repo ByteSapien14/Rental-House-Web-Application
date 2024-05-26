@@ -217,5 +217,5 @@ class ExpenseForm(forms.ModelForm):
             raise ValidationError("Date can't be empty")
         if status == 'paid' and date > timezone.now().date():
             raise forms.ValidationError("Paid date cannot be in the future.")
-        
+
         return cleaned_data
